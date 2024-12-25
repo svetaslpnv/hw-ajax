@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form class="search-block" action="#">
+        <input class="search-word" type="text">
+        <button class="search-button">Найти</button>
+    </form>
+    <div class="search-result"></div>
+    <script>
+        const searchWord = document.querySelector('.search-word');
+        const searchButton = document.querySelector('.search-button');
+        const searchResult = document.querySelector('.search-result');
+    
+        searchButton.addEventListener('click', () => {
+            searchButton.setAttribute('disabled', true);
+            searchResult.textContent = '';
+
+            const word = searchWord.value;
+    
+            fetch(`/data/${word}.json`)
+                .then(response => response.json())
+                .then(data => {
+                    searchResult.textContent = data.result;
+                })
+                .catch((error) => {
+                    searchResult.textContent = 'Ничего не нашлось :( ';
+                })
+                .finally(() => {
+                    searchButton.removeAttribute('disabled');
+                });
+        });
+    </script>
+    
+</body>
+</html>
